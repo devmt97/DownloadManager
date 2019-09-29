@@ -14,6 +14,11 @@ import java.net.URLConnection;
 
 
 public class DownloadManager extends AsyncTask<String, String, String> {
+    private ProgressListener listener;
+
+    public void setListener(ProgressListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     protected void onPreExecute() {
@@ -87,6 +92,7 @@ public class DownloadManager extends AsyncTask<String, String, String> {
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);
         Log.d("abcdef", values[0]);
+        listener.onProgress(values[0]);
     }
 
     @Override
