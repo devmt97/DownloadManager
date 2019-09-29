@@ -22,7 +22,7 @@ public class DownloadManager extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... params) {
-
+        String url;
         InputStream is = null;
         URL u = null;
         int len1 = 0;
