@@ -30,15 +30,15 @@ public class DownloadManager extends AsyncTask<String, String, String> {
         String url;
         InputStream is = null;
         URL u = null;
-        int len1 = 0;
+        int read = 0;
         int temp_progress = 0;
         int progress = 0;
         try {
             u = new URL(params[0]);
             is = u.openStream();
             URLConnection huc = u.openConnection();
-            huc.connect();
-            int size = huc.getContentLength();
+            huc.setRequestProperty("Accept-Encoding", "identity"); // <--- Add this line
+            int size = huc.getContentLength(); // i get negetive length
 
             if (huc != null) {
                 String file_name = params[1] + params[2];
@@ -51,19 +51,12 @@ public class DownloadManager extends AsyncTask<String, String, String> {
 
                 FileOutputStream fos = new FileOutputStream(f.getAbsolutePath() + "/" + file_name);
                 byte[] buffer = new byte[1024];
-                int total = 0;
+                int count = 0;
                 if (is != null) {
-                    while ((len1 = is.read(buffer)) != -1) {
-                        total += len1;
-                        progress = (int) ((total * 100) / size);
-                        if (progress >= 0) {
-                            temp_progress = progress;
-                            publishProgress("" + progress);
-                        } else {
-                            publishProgress("" + temp_progress + 1);
-                        }
-
-                        fos.write(buffer, 0, len1);
+                    while ((count = is.read(buffer)) != -1) {
+                        read += count;
+                        fos.write(buffer, 0, count);
+                        publishProgress(""+(int) ((read * 100) / size));
                     }
                 }
 
