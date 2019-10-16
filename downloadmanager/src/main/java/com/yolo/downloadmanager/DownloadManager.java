@@ -61,7 +61,8 @@ public class DownloadManager extends AsyncTask<String, String, String> {
                 }
 
                 if (fos != null) {
-                    publishProgress("" + 100);
+                       listener.onFinished();
+                   
                     fos.close();
                 }
             }
@@ -90,7 +91,7 @@ public class DownloadManager extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        listener.onFinished();
+     
         super.onPostExecute(s);
     }
 }
